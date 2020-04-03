@@ -1,7 +1,7 @@
 {
     "name":"xkcd Enhancer",
-    "version":"0.1",
-    "description":"Minor enhancements for xkcd.com.",
+    "version":"0.1.1",
+    "description":"Adds some minor enhancements to xkcd.com.",
     "author":"Spencer Harston",
     "icons":{
         "16":"img/icon.png",
