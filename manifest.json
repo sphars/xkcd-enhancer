@@ -1,0 +1,21 @@
+{
+    "name":"xkcd Enhancer",
+    "version":"0.1",
+    "description":"Minor enhancements for xkcd.com.",
+    "author":"Spencer Harston",
+    "icons":{
+        "16":"img/icon.png",
+        "32":"img/icon.png",
+        "48":"img/icon.png",
+        "128":"img/icon.png"
+    },
+    "content_scripts":[
+        {
+            "run_at":"document_end",
+            "matches":["https://xkcd.com/*"],
+            "js":["script.js"],
+            "css":["style.css"]
+        }
+    ],
+    "manifest_version":2
+}
