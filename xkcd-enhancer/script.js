@@ -3,12 +3,18 @@ console.log('[xkcd enhancer js loaded]');
 // function definitions
 // display the comic's hover text (title attribute) below the comic
 function displayComicHoverText(){
-    var comicDiv = document.getElementById('comic');
-    var comicHoverText = document.querySelectorAll('#comic img')[0].title;
+    var comic = document.getElementById('comic');
+    var comicHoverText = comic.querySelectorAll('[title]')[0].title;
+
+    //check if hover text is empty
+    if (comicHoverText === ''){
+        comicHoverText = '[hover text not found]';
+    }
+
     var hoverTextElement = document.createElement('p');
     hoverTextElement.setAttribute('id', 'hoverText');
-    hoverTextElement.innerHTML = comicHoverText;
-    comicDiv.appendChild(hoverTextElement);    
+    hoverTextElement.appendChild(document.createTextNode(comicHoverText));
+    comic.parentNode.insertBefore(hoverTextElement, comic.nextSibling);    
 }
 
 // call functions

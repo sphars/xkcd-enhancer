@@ -8,7 +8,7 @@ Currently for Chromium-based browsers only.
 1. Download the latest xkcd-enhancer.zip file from the [Releases](https://github.com/spncrhrstn/xkcd-enhancer/releases) page.
 2. Extract the contents of the zip file to your computer.
 3. In Chrome, navigate to [chrome://extensions](chrome://extensions) and toggle Developer mode to on.
-4. Click LOAD UNPACKED button and select the extension xkcd-enhancer folder that you unzipped (not the .zip file but the folder within the zip).
+4. Click Load Unpacked button and select the extension xkcd-enhancer folder that you unzipped (not the .zip file but the folder within the zip).
 
 ## Enhancements
 This extension provides the following enhancements:
