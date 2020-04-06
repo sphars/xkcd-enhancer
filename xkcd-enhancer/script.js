@@ -1,38 +1,49 @@
 console.log('[xkcd enhancer js loaded]');
 
-const comicTitle = document.getElementById('ctitle').innerText;
-const comicNumber = getComicNumber();
-console.log(comicNumber + ": " + comicTitle);
+let comicJson = {};
+let comicNumber = getComicNumber();
 
-// function definitions
-// display the comic's hover text (title attribute) below the comic
-function displayComicHoverText(){
-    var comic = document.getElementById('comic');
-    var comicHoverText = comic.querySelectorAll('[title]')[0].title;
+// get the comic number from current URL
+function getComicNumber(){
+    var regExp = /\d+/g;
+    var comicURL = document.URL;
+    return (comicURL.match(regExp) ? comicURL.match(regExp)[0] : '0');
+}
 
-    //check if hover text is empty
-    if (comicHoverText === ''){
-        comicHoverText = '[hover text not found]';
+// get json url
+function getJsonUrl(comicNumber){
+    if(comicNumber != '0'){
+        return `https://xkcd.com/${comicNumber}/info.0.json`;
+    } else {
+        return `https://xkcd.com/info.0.json`;
     }
+}
 
+// fetch comic data
+async function getComicJson(url){
+    let response = await fetch(url);
+    if(response.ok){
+        comicJson = await response.json();
+        processComicJson(comicJson);
+    } else{
+        console.error(`error fetching comic ${getComicNumber()} json: ${response.status}`);
+    }
+}
+
+// process the comic data
+function processComicJson(json){
+    displayComicHoverText(json.alt);
+}
+
+// display the comic's hover text (title attribute) below the comic
+function displayComicHoverText(hoverText){
+    var comic = document.getElementById('comic');
     var hoverTextElement = document.createElement('p');
+    
     hoverTextElement.setAttribute('id', 'hoverText');
-    hoverTextElement.appendChild(document.createTextNode(comicHoverText));
+    hoverTextElement.appendChild(document.createTextNode(hoverText));
     comic.parentNode.insertBefore(hoverTextElement, comic.nextSibling);    
 }
 
-// get the comic number
-function getComicNumber(){
-    var regExp = /\d+/g;
-    var prevComicURL = document.querySelectorAll("[rel=prev]")[0].href;
-    
-    if (prevComicURL.indexOf('#') !== -1){
-        return '1';
-    } else{
-        var comicNumber = Number(prevComicURL.match(regExp)[0]) + 1;
-        return comicNumber.toString();
-    }
-}
-
 // call functions
-displayComicHoverText();
+getComicJson(getJsonUrl(comicNumber));
