@@ -32,6 +32,7 @@ async function getComicJson(url){
 
 // process the comic data
 function processComicJson(json){
+    addComicDateAndNum(json.year, json.month, json.day, json.num);
     displayComicHoverText(json.alt);
     addExplainLink(json.num);
 }
@@ -64,6 +65,21 @@ function addExplainLink(comicNumber){
     for (var nav of navs) {
         nav.insertBefore(explainNav.cloneNode(true), nav.children[3]);
     }
+}
+
+// add date to comic title
+function addComicDateAndNum(year, month, day, num){
+    var ctitle = document.getElementById('ctitle');
+    var comicDate = new Date(Number(year), Number(month) - 1, Number(day));
+    
+    var comicDateElement = document.createElement('div');
+    comicDateElement.id = "cdate";
+
+    var dateOptions = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric'};
+
+    comicDateElement.innerText = `#${num} | ${comicDate.toLocaleDateString("en-US", dateOptions)}`;
+
+    ctitle.parentNode.insertBefore(comicDateElement, ctitle.nextSibling);
 }
 
 // call functions
