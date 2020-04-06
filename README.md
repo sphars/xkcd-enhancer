@@ -16,6 +16,9 @@ This extension provides the following enhancements:
 ### Display comic hover text
 Adds the comic's hover text (image's title attribute) below the comic. No more need to hover over the comic to view the text.
 
+### Add link to explain xkcd wiki
+Adds a link to the comic's entry at [explainxkcd.com](https://www.explainxkcd.com/). For those times when you feel dumb.
+
 (more coming soon)
 
 ## Resources
