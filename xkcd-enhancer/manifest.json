@@ -1,6 +1,6 @@
 {
     "name":"xkcd Enhancer",
-    "version":"0.1.6",
+    "version":"0.1.7",
     "description":"Adds some minor enhancements to xkcd.com.",
     "author":"Spencer Harston",
     "icons":{
@@ -15,6 +15,9 @@
             "matches": [
                 "https://xkcd.com/",
                 "https://xkcd.com/*/"
+            ],
+            "exclude_matches": [
+                "https://xkcd.com/archive/"
             ],
             "js":["script.js"],
             "css":["style.css"]
