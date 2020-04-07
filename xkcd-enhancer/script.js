@@ -34,7 +34,7 @@ async function getComicJson(url){
 function processComicJson(json){
     addComicDateAndNum(json.year, json.month, json.day, json.num);
     displayComicHoverText(json.alt);
-    addExplainLink(json.num);
+    addComicActions(json);
 }
 
 // display the comic's hover text (title attribute) below the comic
@@ -45,26 +45,6 @@ function displayComicHoverText(hoverText){
     hoverTextElement.setAttribute('id', 'hoverText');
     hoverTextElement.appendChild(document.createTextNode(hoverText));
     comic.parentNode.insertBefore(hoverTextElement, comic.nextSibling);    
-}
-
-// add an explain link to the comic navigation
-function addExplainLink(comicNumber){
-    var explainURL = `https://www.explainxkcd.com/${comicNumber}/`;
-
-    var explainLink = document.createElement('a');
-    explainLink.href = explainURL;
-    explainLink.target = "_blank";
-    explainLink.accessKey = 'e';
-    explainLink.innerText = "Explain";
-    
-    var explainNav = document.createElement('li');
-    explainNav.append(explainLink);
-
-    var navs = document.querySelectorAll('.comicNav');
-
-    for (var nav of navs) {
-        nav.insertBefore(explainNav.cloneNode(true), nav.children[3]);
-    }
 }
 
 // add date to comic title
@@ -80,6 +60,70 @@ function addComicDateAndNum(year, month, day, num){
     comicDateElement.innerText = `#${num} | ${comicDate.toLocaleDateString("en-US", dateOptions)}`;
 
     ctitle.parentNode.insertBefore(comicDateElement, ctitle.nextSibling);
+}
+
+// add comic actions to page
+function addComicActions(json){
+
+    //create the space for the actions
+    var actionsElement = document.createElement('ul');
+    actionsElement.classList.add('comicActions');
+
+    // add actions
+    var explainLink = createExplainLink(json.num);
+    var favButton = createFavoritesButton(json.num, json.title);
+
+    actionsElement.append(explainLink, favButton);
+
+    //add the actions to the page
+    var lastComicNav = document.querySelectorAll('.comicNav')[1];
+    lastComicNav.parentNode.insertBefore(actionsElement, lastComicNav);
+}
+
+// add an explain link to the comic navigation
+function createExplainLink(comicNumber){
+    var explainURL = `https://www.explainxkcd.com/${comicNumber}/`;
+
+    var explainLink = document.createElement('a');
+    explainLink.href = explainURL;
+    explainLink.target = "_blank";
+    explainLink.accessKey = 'e';
+    explainLink.innerText = "Explain";
+    
+    var explainNav = document.createElement('li');
+    explainNav.append(explainLink);
+
+    return explainNav;
+}
+
+// add favorites button to page
+function createFavoritesButton(num, title){
+    let favoriteButton = document.createElement('span');
+    favoriteButton.accessKey = 'f';
+    favoriteButton.innerText = "Add to Favorites";
+
+    favoriteButton.addEventListener('click', function(){
+        addToFavorites(num, title);
+    });
+
+    var favoriteNav = document.createElement('li');
+    favoriteNav.append(favoriteButton);
+    
+    return favoriteNav;
+}
+
+// add the comic to browser local storage
+function addToFavorites(num, title){
+    var favoriteComics = localStorage.getItem('favoriteComics') ? JSON.parse(localStorage.getItem('favoriteComics')) : [];
+
+    var favorite = {
+        num: num,
+        title: title
+    }
+
+    favoriteComics.push(favorite);
+    localStorage.setItem('favoriteComics', JSON.stringify(favoriteComics));
+    console.log(favorite);
 }
 
 // call functions
