@@ -19,6 +19,9 @@ Adds the comic's hover text (image's title attribute) below the comic. No more n
 ### Add link to explain xkcd wiki
 Adds a link to the comic's entry at [explainxkcd.com](https://www.explainxkcd.com/). For those times when you feel dumb.
 
+### Add comic number and date to page
+The comic number and the date it was published is shown just below the comic title.
+
 (more coming soon)
 
 ## Resources
