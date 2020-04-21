@@ -100,11 +100,20 @@ function createExplainLink(comicNumber){
 function createFavoritesButton(num, title){
     let favoriteButton = document.createElement('span');
     favoriteButton.accessKey = 'f';
-    favoriteButton.innerText = "Add to Favorites";
+    favoriteButton.id = "favorite";
 
-    favoriteButton.addEventListener('click', function(){
-        addToFavorites(num, title);
-    });
+    //check if comic is in favorites array
+    if(!isFavorited(num)){
+        favoriteButton.innerText = "Favorite";
+        favoriteButton.addEventListener('click', function(){
+            addToFavorites(num, title);
+        });
+    } else{
+        favoriteButton.innerText = "Unfavorite";
+        favoriteButton.addEventListener('click', function(){
+            removeFromFavorites(num, title);
+        });
+    }
 
     var favoriteNav = document.createElement('li');
     favoriteNav.append(favoriteButton);
@@ -114,6 +123,7 @@ function createFavoritesButton(num, title){
 
 // add the comic to browser local storage
 function addToFavorites(num, title){
+    var button = document.getElementById('favorite');
     var favoriteComics = localStorage.getItem('favoriteComics') ? JSON.parse(localStorage.getItem('favoriteComics')) : [];
 
     var favorite = {
@@ -123,7 +133,55 @@ function addToFavorites(num, title){
 
     favoriteComics.push(favorite);
     localStorage.setItem('favoriteComics', JSON.stringify(favoriteComics));
-    console.log(favorite);
+
+    button.innerText = "Unfavorite";
+    button.addEventListener('click', function(){
+        removeFromFavorites(num, title);
+    });
+}
+
+// remove comic from browser local storage
+function removeFromFavorites(num, title){
+    var button = document.getElementById('favorite');
+    var favoriteComics = localStorage.getItem('favoriteComics') ? JSON.parse(localStorage.getItem('favoriteComics')) : [];
+    
+    for(var i = 0; i < favoriteComics.length; i++){
+        if(favoriteComics[i].num === num){
+            delete favoriteComics[i];
+            break;
+        }
+    }
+   
+    if(favoriteComics.length === 0 || favoriteComics[0] == null){
+        favoriteComics = [];
+    }
+
+    localStorage.setItem('favoriteComics', JSON.stringify(favoriteComics));
+
+    button.innerText = "Favorite";
+    button.addEventListener('click', function(){
+        addToFavorites(num, title);
+    });
+}
+
+// check if comic is in list of favorite comics
+function isFavorited(num){
+    var favoriteComics = localStorage.getItem('favoriteComics') ? JSON.parse(localStorage.getItem('favoriteComics')) : [];
+    
+    if (Array.isArray(favoriteComics) && favoriteComics.length) {
+        // array exists and is not empty
+        console.log(`favorites array contains ${favoriteComics.length} favorites`);
+
+        for(var i = 0; i < favoriteComics.length; i++){
+            if(favoriteComics[i].num === num){
+                return true;
+            }
+        }
+        return false;       
+    }
+    else{
+        return false;
+    }
 }
 
 // call functions
